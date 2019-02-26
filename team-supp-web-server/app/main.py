@@ -30,10 +30,10 @@ def diag_mecab():
   str_report += '-Owakati:\n' + \
                 ' Result=' + str_result + '\n'
 
-#  tagger = MeCab.Tagger( "-d /usr/local/lib/mecab/dic/mecab-ipadic-neologd" )
-#  str_result = tagger.parse( str_input )
-#  str_report += '-d /usr/local/lib/mecab/dic/mecab-ipadic-neologd:\n' + \
-#                ' Result=' + str_result + '\n'
+  tagger = MeCab.Tagger( "-d /usr/lib/mecab/dic/mecab-ipadic-neologd" )
+  str_result = tagger.parse( str_input )
+  str_report += '-d /usr/lib/mecab/dic/mecab-ipadic-neologd:\n' + \
+                ' Result=' + str_result + '\n'
 
   print( str_report )
   return str_report
