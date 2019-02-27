@@ -1,0 +1,64 @@
+
+http://plantuml.com/ja/guide
+
+@startuml
+skinparam handwritten true
+skinparam backgroundColor #EEEBDC
+
+!define send(a,b,c) a->b : c
+
+autonumber
+
+actor User as user
+participant "Client\n(Android)" as client
+participant "Job" as job
+participant "REST-Server\n(flask)" as rest
+participant "Cloud-OCR\n(Azure/GCV)" as cloud
+
+user ->> client: Perform prescription capturing
+client -> client: Taking a prescription (jpg)
+client ->> rest: Req: POST with Image (multipart/form-data)
+
+create job
+rest -> job: create job location
+job -> job: state in progress
+
+rest -->> client: Res: POST location = job
+rest -> rest: Pre-processing for OCR (Crop, Bin, ...)
+rest ->> cloud: Req: OCR with Image (jpg)
+note over cloud
+<OCR>
+Azure Computer Vision
+Google Computer Vision
+end note
+
+opt monitor
+client ->> job: Req: GET (poling)
+job -->> client: Res: GET state = in progress
+... : ...
+end opt
+
+cloud -->> rest: Res: OCR result with JSON
+
+rest -> rest: Grouping extraction elements
+note over cloud
+<Grouping>
+形態素解析(MeCab), Keword抽出, 等
+出力List (薬名, 用法, 容量, 日数, 薬写真URL)
+end note
+
+rest ->> job: Update result with JSON
+job -> job: state of completion
+
+client ->> job: Req: GET (poling)
+job -->> client: Res: GET state = completed result = JSON
+
+client -> client: Register in the calendar
+
+client ->> job: Req: DEL
+job -->> client: Res: DEL
+
+destroy job
+
+
+@enduml
