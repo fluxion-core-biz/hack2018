@@ -113,3 +113,30 @@ docker rm <container-id>
 docker images
 docker rmi <image-id>
 ```
+
+## Azure Conteiner Registoryへのイメージ登録方法
+
+1. terminalからログインする
+
+```shell
+docker login teamsupp.azurecr.io
+Username: teamsupp
+Password: Z/GPzmWp5Ox3dXhVSFrjMmcPde1F05Dp # (実際はPWは入力しても表示されません)
+Login Succeeded
+```
+
+1. イメージにTagを付ける
+`docker tag {ローカルにあるイメージ名:タグ} {ログイン先のAzureサーバー名}/{イメージ名}:{タグ}`
+実行したら`docker images`コマンドで作成されたことを確認する。
+
+```shell
+docker tag team-supp:light-00.01 teamsupp.azurecr.io/team-supp:light-00.01
+docker images
+```
+
+1. 作成したイメージをPushする
+`docker push {ログイン先のAzureサーバー名}/{イメージ名}:{タグ}`
+
+```shell
+docker push teamsupp.azurecr.io/team-supp:light-00.01
+```
