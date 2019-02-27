@@ -14,6 +14,8 @@ RUN apt-get update \
     && pip install --upgrade pip \
     && pip install mecab-python3 \
     && pip install opencv-python \
+    && pip install pillow \
+    && pip install requests \
     && rm -rf /var/lib/apt/lists/*
 
 #    mecab-ipadic \
@@ -31,4 +33,11 @@ WORKDIR /app
 ENV NGINX_MAX_UPLOAD 32m
 
 COPY ./app /app
+
+# # Move the base entrypoint to reuse it
+# RUN mv /entrypoint.sh /uwsgi-nginx-entrypoint.sh
+# 
+# # Copy the entrypoint that will generate Nginx additional configs
+# COPY entrypoint.sh /entrypoint.sh
+# RUN chmod +x /entrypoint.sh
 
