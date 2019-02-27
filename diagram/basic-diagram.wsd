@@ -12,7 +12,7 @@ autonumber
 actor User as user
 participant "Client\n(Android)" as client
 participant "Job" as job
-participant "REST-Server\n(flask)" as rest
+participant "REST-Server\n(uWSGI + nginx + flask)" as rest
 participant "Cloud-OCR\n(Azure/GCV)" as cloud
 
 user ->> client: Perform prescription capturing
