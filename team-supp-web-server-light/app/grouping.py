@@ -1,4 +1,7 @@
-       
+
+import re
+
+
 def grouping( in_words ):
   results = []
  
@@ -32,4 +35,13 @@ def grouping( in_words ):
   return medicineMatch
   """
 
+def grouping_regexp( text ):
+  results = []
+  
+  # Trim
+  pattern = r'([\d]+\).*】)'
+  matched_list = re.findall( pattern, text )
+  
+  print( matched_list )
+  return results
 

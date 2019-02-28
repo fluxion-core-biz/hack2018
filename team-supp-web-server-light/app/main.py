@@ -24,8 +24,8 @@ from ocr_gcp import execute_ocr_gcp
 from diag import diag
 from morphological import analyse_morphological
 from grouping import grouping
+from grouping import grouping_regexp
 
-import os.path
 
 app = Flask( __name__, static_folder='static' )
 
@@ -113,8 +113,7 @@ def analyse_medicine_info():
       upload_image( img_file )
 
       # Execute OCR
-      path, ext = os.path.splitext(img_file.filename)
-      str_prescription = execute_ocr_azure(path)
+      str_prescription = execute_ocr()
 #      str_prescription = execute_ocr_gcp()
       
       # analyse morrphological
@@ -122,6 +121,8 @@ def analyse_medicine_info():
 
       # grouping words
       map = grouping( str_words )
+      
+      grouping_regexp( str_words )
  
       print( '<-- compl analyse' )
       return jsonify( map )
@@ -145,12 +146,6 @@ def analyse_medicine_info():
 #     return str_error
 # #    return redirect( url_for('index') )
 
-@app.route( '/api/azure/real', methods=[ 'GET', 'POST' ] )
-def ocr_by_azure_real():
-  res = execute_ocr_azure( '/app/static/uploads/sample' )
-  return '<p>' + to_html( res ) + '</p>'
-
-
 @app.route( '/api/azure', methods=[ 'GET', 'POST' ] )
 def ocr_by_azure():
   print( 'method=' + request.method )
@@ -159,11 +154,6 @@ def ocr_by_azure():
   res = execute_ocr_azure( '/app/static/uploads/sample-02' )
 #  res = execute_ocr_azure( '/app/static/uploads/sample-03' )
   return '<p>' + to_html( res ) + '</p>'
-
-@app.route( '/api/gcv/real', methods=[ 'GET', 'POST' ] )
-def ocr_by_gcv_real():
-  res = execute_ocr_gcp( '/app/static/uploads/sample.jpg' )
-  return to_html( res )
 
 
 @app.route( '/api/gcv', methods=[ 'GET', 'POST' ] )

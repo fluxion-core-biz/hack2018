@@ -40,6 +40,7 @@ docker build -t team-supp:00.01 .
 ```shell
 docker run -d --name my-supp -p 80:80 team-supp:00.01
 docker run -d --name my-supp-light -p 80:80 team-supp:light-00.01
+docker run -d --name my-supp-light -p 80:80 team-supp:light-00.03
 ```
 
 ## 開発サイクルではコンテナの起動、停止で運用する
@@ -131,6 +132,7 @@ Login Succeeded
 
 ```shell
 docker tag team-supp:light-00.01 teamsupp.azurecr.io/team-supp:light-00.01
+docker tag team-supp:light-00.02 teamsupp.azurecr.io/team-supp:light-00.02
 docker images
 ```
 
@@ -145,4 +147,11 @@ docker push teamsupp.azurecr.io/team-supp:light-00.01
 ```shell
 az login
 az container exec --resource-group teamsupp --name teamsuppv0001 --exec-command /bin/bash
+
+az container exec --resource-group teamsupp --name teamsuppv0003 --exec-command /bin/bash
+
+az container attach --resource-group teamsupp --name teamsuppv0003
+
+az container logs --resource-group teamsupp --name teamsuppv0003
 ```
+
