@@ -130,22 +130,27 @@ def analyse_medicine_info():
       return str_error
 
   else:
-    str_error = 'Not supported GET' + \
-                '<p>Sample Image</p>' + \
-                '<p><img src="/static/uploads/sample.jpg" /></p>'
-    print( str_error )
-    return str_error
-#    return redirect( url_for('index') )
+    str_ocr = execute_ocr_azure( '/app/static/uploads/sample-02' )
+    print( str_ocr )
 
+    map = grouping( str_ocr )
+    return jsonify( map )
+
+#     str_error = 'Not supported GET' + \
+#                 '<p>Sample Image</p>' + \
+#                 '<p><img src="/static/uploads/sample.jpg" /></p>'
+#     print( str_error )
+#     return str_error
+# #    return redirect( url_for('index') )
 
 @app.route( '/api/azure', methods=[ 'GET', 'POST' ] )
 def ocr_by_azure():
   print( 'method=' + request.method )
 #  res = execute_ocr_azure( '/app/static/uploads/sample.jpg' )
 #  res = execute_ocr_azure( '/app/static/uploads/sample' )
-#  res = execute_ocr_azure( '/app/static/uploads/sample-02' )
-  res = execute_ocr_azure( '/app/static/uploads/sample-03' )
-  return '<p>' + res + '</p>'
+  res = execute_ocr_azure( '/app/static/uploads/sample-02' )
+#  res = execute_ocr_azure( '/app/static/uploads/sample-03' )
+  return '<p>' + to_html( res ) + '</p>'
 
 
 @app.route( '/api/gcv', methods=[ 'GET', 'POST' ] )
@@ -156,8 +161,8 @@ def ocr_by_gcv():
     print( '--> start analyse' )
      
 #    res = execute_ocr_gcp( '/app/static/uploads/sample.jpg' )
-#    res = execute_ocr_gcp( '/app/static/uploads/sample-02.jpg' )
-    res = execute_ocr_gcp( '/app/static/uploads/sample-03.jpg' )
+    res = execute_ocr_gcp( '/app/static/uploads/sample-02.jpg' )
+#     res = execute_ocr_gcp( '/app/static/uploads/sample-03.jpg' )
       
     print( '<-- compl analyse' )
     return to_html( res )

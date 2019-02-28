@@ -46,12 +46,14 @@ def ocr(image_path):
       for word_info in word_metadata["words"]:
         word_infos.append(word_info["text"])
 
+      word_infos.append("\n")
+
   return ''.join(word_infos)
 
 def binImager(image_path):
-  t = 140
+  t = 127
 
-  img = cv2.imread(image_path + '_croped.jpg',)
+  img = cv2.imread(image_path + '_croped.jpg')
 
   gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
 

@@ -140,3 +140,9 @@ docker images
 ```shell
 docker push teamsupp.azurecr.io/team-supp:light-00.01
 ```
+# Azure Container のDebug方法
+
+```shell
+az login
+az container exec --resource-group teamsupp --name teamsuppv0001 --exec-command /bin/bash
+```
